@@ -1,0 +1,81 @@
+{
+  "entities": {
+    "booking": {
+      "title": "Booking",
+      "description": "A tour booking request from a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tripId": { "type": "string", "description": "ID of the trip being booked" },
+        "tripTitle": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "status": { 
+          "type": "string", 
+          "enum": ["pending", "confirmed", "cancelled"],
+          "description": "Status of the booking"
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["tripId", "customerName", "customerPhone", "status", "createdAt"]
+    },
+    "trip": {
+      "title": "Trip",
+      "description": "A travel tour package",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "destination": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "string" },
+        "duration": { "type": "string" },
+        "startDate": { "type": "string" },
+        "groupSize": { "type": "string" },
+        "image": { "type": "string" },
+        "highlights": { "type": "array", "items": { "type": "string" } },
+        "itinerary": { "type": "array", "items": { "$ref": "#/entities/day" } },
+        "includes": { "type": "array", "items": { "type": "string" } },
+        "excludes": { "type": "array", "items": { "type": "string" } },
+        "gallery": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "destination", "price", "duration", "image"]
+    },
+    "day": {
+      "title": "Itinerary Day",
+      "type": "object",
+      "properties": {
+        "day": { "type": "number" },
+        "title": { "type": "string" },
+        "activities": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "user": {
+      "title": "User Profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "isAdmin": { "type": "boolean" },
+        "displayName": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/bookings/{bookingId}": {
+      "schema": "booking",
+      "description": "Collection of visitor booking requests"
+    },
+    "/trips/{tripId}": {
+      "schema": "trip",
+      "description": "Collection of available tour packages"
+    },
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "User profiles and permissions"
+    }
+  }
+}
